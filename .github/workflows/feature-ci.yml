@@ -1,0 +1,54 @@
+# 1. Workflow para Feature Branches
+name: Feature CI - Build, Test and Create PR
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        working-directory: ./livros-shelf
+
+      - name: Build and run tests with Gradle
+        run: ./gradlew build
+        working-directory: ./livros-shelf
+
+  create-pull-request:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request to develop
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "auto(pr): Create PR from feature branch"
+          branch: ${{ github.ref_name }}
+          base: develop
+          title: "feat: ${{ github.ref_name }}"
+          body: |
+            ## Pull Request Automático
+            - Branch: `${{ github.ref_name }}`
+            - Workflow: [Feature CI](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            Este PR foi gerado automaticamente após o sucesso do build e testes.
+          labels: "autobot-pr"
+          assignees: "${{ github.actor }}"
+          reviewers: "${{ github.actor }}"

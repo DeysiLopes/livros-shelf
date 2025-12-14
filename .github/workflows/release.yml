@@ -1,0 +1,81 @@
+# 3. Workflow para Release Branches
+name: Release CI - Create Release and PR to Main
+
+on:
+  push:
+    branches:
+      - 'release/**'
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        working-directory: ./livros-shelf
+
+      - name: Build and run tests with Gradle
+        run: ./gradlew build
+        working-directory: ./livros-shelf
+
+  create-release:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch all history for all tags and branches
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install semantic-release and plugins
+        run: npm install -g semantic-release @semantic-release/github @semantic-release/commit-analyzer @semantic-release/release-notes-generator
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+
+  create-main-pr:
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request to main
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "auto(pr): Merging release to main"
+          branch: ${{ github.ref_name }}
+          base: main
+          title: "chore(release): Merge `${{ github.ref_name }}` to main"
+          body: |
+            ## Pull Request de Release
+            - Branch: `${{ github.ref_name }}`
+            - Workflow: [Release CI](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            Este PR foi gerado automaticamente para mergear a release na branch `main`.
+          labels: "release"
+          assignees: "${{ github.actor }}"

@@ -1,0 +1,46 @@
+# 4. Workflow para Deploy na Main (Produção)
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production # Opcional: Para regras de proteção de ambiente
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        working-directory: ./livros-shelf
+
+      - name: Build executable JAR
+        run: ./gradlew bootJar
+        working-directory: ./livros-shelf
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1 # <-- TODO: Altere para sua região da AWS
+
+      - name: Deploy to AWS Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          application_name: "livros-shelf" # <-- TODO: Altere para o nome da sua aplicação no EB
+          environment_name: "livros-shelf-prod" # <-- TODO: Altere para o nome do seu ambiente no EB
+          version_label: "v${{ github.sha }}"
+          region: "us-east-1" # <-- TODO: Altere para sua região da AWS
+          deployment_package: livros-shelf/build/libs/livros-shelf-0.0.1-SNAPSHOT.jar
