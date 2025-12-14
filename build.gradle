@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0' // Alterado para versão estável 3.2.0
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.deysi_lps'
+version = '0.0.1-SNAPSHOT'
+description = 'livros-shelf'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+// Gerenciamento de versão para o AWS SDK
+dependencyManagement {
+    imports {
+        mavenBom "software.amazon.awssdk:bom:2.21.33" // Bill of Materials para o AWS SDK v2
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web' // Preferir 'starter-web' ao invés de 'webmvc'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    
+    // AWS SDK para DynamoDB (Enhanced Client)
+    implementation 'software.amazon.awssdk:dynamodb-enhanced'
+
+    // JWT para autenticação
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    // As dependências de teste para AMQP, Validation e WebMVC podem ser simplificadas.
+    // spring-boot-starter-test já inclui JUnit Jupiter.
+    // 'spring-security-test' é útil para testes de segurança específicos.
+    // Se necessário, 'spring-rabbit-test' pode ser adicionado para testes de AMQP.
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
