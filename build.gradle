@@ -21,7 +21,7 @@ repositories {
 // Gerenciamento de versão para o AWS SDK
 dependencyManagement {
     imports {
-        mavenBom "software.amazon.awssdk:bom:2.21.33" // Bill of Materials para o AWS SDK v2
+        mavenBom "software.amazon.awssdk:bom:2.25.48" // Bill of Materials para o AWS SDK v2
     }
 }
 
