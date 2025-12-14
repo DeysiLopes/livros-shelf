@@ -201,10 +201,24 @@ public class ArchitectureTest {
      * não terminam com o sufixo 'Port'.
      */
     @ArchTest
-    public static final ArchRule domain_models_should_be_in_model_package =
-            classes()
-                    .that().areNotInterfaces()
-                    .and().resideInAPackage("..domain.model..")
-                    .should().haveSimpleNameNotEndingWith("Port")
-                    .because("Modelos de domínio devem estar no pacote model");
-}
+        public static final ArchRule domain_models_should_be_in_model_package =
+                classes()
+                        .that().areNotInterfaces()
+                        .and().resideInAPackage("..domain.model..")
+                        .should().haveSimpleNameNotEndingWith("Port")
+                        .because("Modelos de domínio devem estar no pacote model");
+    
+        // TODO: [CQRS] Criar uma regra mais forte para garantir que os métodos em 'Services'
+        // que manipulam 'Commands' (ex: `registrar`, `atualizar`) tenham retorno `void` ou
+        // retornem apenas o identificador do agregado, mas não um objeto de dados completo (DTO).
+        // Isso reforça a ideia de que comandos não devem retornar dados.
+    
+        // TODO: [CQRS] Criar uma regra que impeça `Services` ou `Handlers` no lado de Query
+        // (Leitura) de injetarem ou dependerem de `Ports` ou `Adapters` do lado de Command (Escrita).
+        // Ex: Um 'UsuarioQueryService' não deveria poder usar o 'UsuarioRepositoryPort' de escrita.
+    
+        // TODO: [DDD] Implementar uma regra para garantir que as classes identificadas como
+        // 'Value Objects' (por anotação ou convenção de nome/pacote) sejam imutáveis
+        // (ex: todos os campos são `final`).
+    }
+    
