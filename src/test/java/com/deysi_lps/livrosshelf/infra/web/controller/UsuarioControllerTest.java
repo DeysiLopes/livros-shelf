@@ -1,6 +1,6 @@
 package com.deysi_lps.livrosshelf.infra.web.controller;
 
-import com.deysi_lps.livrosshelf.application.command.CriarUsuarioCommand;
+import com.deysi_lps.livrosshelf.domain.ports.in.CriarUsuarioInput;
 import com.deysi_lps.livrosshelf.domain.ports.in.UsuarioServicePort;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Disabled;
@@ -45,8 +45,8 @@ class UsuarioControllerTest {
         //    - Use '.content(objectMapper.writeValueAsString(requestObject))'.
         // 3. Verifique se o status da resposta é 201 Created.
         //    - '.andExpect(status().isCreated())'.
-        // 4. Capture o 'CriarUsuarioCommand' que foi passado para o serviço.
-        //    Use 'ArgumentCaptor.forClass(CriarUsuarioCommand.class)'.
+        // 4. Capture o 'CriarUsuarioInput' que foi passado para o serviço.
+        //    Use 'ArgumentCaptor.forClass(CriarUsuarioInput.class)'.
         // 5. Verifique (com 'verify') se o método 'criarUsuario' do serviço foi chamado.
         // 6. Use o captor para verificar se os dados no comando correspondem aos da requisição.
     }

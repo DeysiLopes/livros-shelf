@@ -1,7 +1,7 @@
 package com.deysi_lps.livrosshelf.application.service;
 
-import com.deysi_lps.livrosshelf.application.command.CriarUsuarioCommand;
 import com.deysi_lps.livrosshelf.domain.model.Usuario;
+import com.deysi_lps.livrosshelf.domain.ports.in.CriarUsuarioInput;
 import com.deysi_lps.livrosshelf.domain.ports.in.UsuarioServicePort;
 import com.deysi_lps.livrosshelf.domain.ports.out.UsuarioRepositoryPort;
 import org.springframework.stereotype.Service;
@@ -30,10 +30,10 @@ public class UsuarioService implements UsuarioServicePort {
     }
 
     @Override
-    public void criarUsuario(CriarUsuarioCommand command) {
+    public void criarUsuario(CriarUsuarioInput input) {
         // TODO: [TDD] Passo 2.3 - Implementar a lógica de orquestração.
-        // 1. Crie uma instância do objeto de domínio 'Usuario' a partir dos dados do 'command'.
-        //    (new Usuario(command.getNome(), command.getEmail()))
+        // 1. Crie uma instância do objeto de domínio 'Usuario' a partir dos dados do 'input'.
+        //    (new Usuario(input.nome(), input.email()))
         // 2. Chame o método 'salvar' da porta do repositório para persistir o novo usuário.
     }
 }

@@ -21,7 +21,7 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
     public UsuarioRepositoryAdapter(DynamoDbEnhancedClient enhancedClient) {
         // TODO: [TDD] Passo 4.5 - Injetar o client do DynamoDB e obter a tabela.
         // Descomente a linha abaixo.
-        // this.usuarioTable = enhancedClient.table("Usuario", TableSchema.fromBean(UsuarioEntity.class));
+         this.usuarioTable = enhancedClient.table("Usuario", TableSchema.fromBean(UsuarioEntity.class));
     }
 
     @Override

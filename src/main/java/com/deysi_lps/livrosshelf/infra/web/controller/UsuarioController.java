@@ -1,6 +1,6 @@
 package com.deysi_lps.livrosshelf.infra.web.controller;
 
-import com.deysi_lps.livrosshelf.application.command.CriarUsuarioCommand;
+import com.deysi_lps.livrosshelf.domain.ports.in.CriarUsuarioInput;
 import com.deysi_lps.livrosshelf.domain.ports.in.UsuarioServicePort;
 import com.deysi_lps.livrosshelf.infra.web.dto.CriarUsuarioRequest;
 import jakarta.validation.Valid;
@@ -25,13 +25,13 @@ public class UsuarioController {
     public UsuarioController(UsuarioServicePort usuarioServicePort) {
         // TODO: [TDD] Passo 3.2 - Injeção de Dependência
         // Descomente a linha abaixo.
-        // this.usuarioServicePort = usuarioServicePort;
+        this.usuarioServicePort = usuarioServicePort;
     }
 
     @PostMapping
     public ResponseEntity<Void> criarUsuario(@Valid @RequestBody CriarUsuarioRequest request) {
         // TODO: [TDD] Passo 3.4 - Implementar o método do controller.
-        // 1. Crie um 'CriarUsuarioCommand' a partir do 'request' recebido.
+        // 1. Crie um 'CriarUsuarioInput' a partir do 'request' recebido.
         // 2. Chame o método 'criarUsuario' da porta do serviço ('usuarioServicePort').
         // 3. Retorne uma resposta HTTP 201 Created. O ideal é que o 'criarUsuario'
         //    retorne o ID do novo usuário para que ele possa ser incluído no header 'Location'.

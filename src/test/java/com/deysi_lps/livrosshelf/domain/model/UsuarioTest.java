@@ -17,6 +17,10 @@ class UsuarioTest {
         // 1. Crie um usuário com nome e email válidos.
         // 2. Use assertNotNull para garantir que o ID do usuário não é nulo.
         // 3. Use assertEquals para garantir que o nome e o email foram atribuídos corretamente.
+
+        String nomeValido = "joao das neves";
+        String emailValido = " joaoNeves@email.com";
+        
     }
 
     @Test

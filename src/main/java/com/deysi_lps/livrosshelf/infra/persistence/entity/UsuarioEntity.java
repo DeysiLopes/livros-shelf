@@ -54,6 +54,6 @@ public class UsuarioEntity {
         // Crie uma nova instância de 'Usuario' usando os dados desta entidade.
         // Note que pode ser necessário um construtor privado ou um método fábrica em 'Usuario'
         // para recriar o objeto sem executar as validações novamente, se for o caso.
-        return new Usuario(null, null);
+        return new Usuario(null, null, null);
     }
 }

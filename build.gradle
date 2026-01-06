@@ -40,14 +40,18 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'com.tngtech.archunit:archunit-junit5:1.2.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    // As dependências de teste para AMQP, Validation e WebMVC podem ser simplificadas.
-    // spring-boot-starter-test já inclui JUnit Jupiter.
-    // 'spring-security-test' é útil para testes de segurança específicos.
-    // Se necessário, 'spring-rabbit-test' pode ser adicionado para testes de AMQP.
+
+
+    // Lombok para testes
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
